@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Question Directory</title>
+
+    <style>
+    #buttons_container
+    {
+        text-align:center;
+    }
+    #update, #delete
+    {
+        display:inline;
+    }
+    :root {
+        --logo-color: #FF0054;
+        --main-color: #B6B9B9;
+        --secondary-color: #2D3142;
+        --bg-color: #F6E4CB;
+    }
+    </style>
+</head>
+
+<body style="background-color: var(--bg-color)">
+
+<div class="container">
+
+    <h3 style="text-align: center; font-family: 'Roboto', sans-serif">Question Directory</h3>
+    <hr>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th style="background-color:var(--secondary-color);">Quiz</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tempQuestion : ${questions}">
+            <td th:text="${tempQuestion.sentence}" />
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-bordered table-striped" id="ans">
+        <thead class="thead-dark">
+        <tr>
+            <th style="background-color:var(--secondary-color);">Answers</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tempQuestion : ${questions}">
+            <td th:text="${tempQuestion.answer}" />
+        </tr>
+        </tbody>
+    </table>
+
+    <hr>
+    <a th:href="@{/questions/list}">Back to Questions List</a>
+    <button class="btn btn-primary" onclick="displayAns()" style="float: right; background-color: var(--secondary-color)">Show Answers</button>
+</div>
+<script>
+    var ans = document.getElementById("ans");
+    ans.style.display = "none";
+    function displayAns() {
+        ans.style.display = "block";
+    }
+</script>
+</body>
+</html>

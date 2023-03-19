@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Generate Quiz</title>
+</head>
+<style>
+    :root {
+        --logo-color: #FF0054;
+        --main-color: #B6B9B9;
+        --secondary-color: #2D3142;
+        --bg-color: #F6E4CB;
+    }
+    .btn.nohover:hover {
+        /* here copy default .btn class styles */
+        background-color: var(--borderWidth);
+        /* or something like that */
+    }
+    .gradient-border {
+        --borderWidth: 3px;
+        position: relative;
+        border-radius: var(--borderWidth);
+        background-color: var(--borderWidth);
+    }
+
+    .gradient-border:after {
+        content: '';
+        position: absolute;
+        top: calc(-1 * var(--borderWidth));
+        left: calc(-1 * var(--borderWidth));
+        height: calc(100% + var(--borderWidth) * 2);
+        width: calc(100% + var(--borderWidth) * 2);
+        background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+        border-radius: calc(2 * var(--borderWidth));
+        z-index: -1;
+        animation: animatedgradient 3s ease alternate infinite;
+        background-size: 300% 300%;
+    }
+
+
+    @keyframes animatedgradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+</style>
+<body style="text-align: center; background-color: var(--bg-color)">
+
+<div class="container">
+
+    <h3 style="text-align: center;font-family: 'Roboto', sans-serif">Exam booster</h3>
+    <hr>
+
+    <p class="h4 mb-4" style="text-align: center;font-family: 'Roboto', sans-serif;">Generate Quiz by Category</p>
+    <form th:action="@{/export/generateQuiz}"
+          th:object="${question}" method="POST">
+
+        <div>
+            <select th:field="*{category}" class="form-control mb-4 col-4" id="dropCategory" style="display: inline-block">
+                <option value="0">Select category</option>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+        </div>
+
+
+        <h5>Select number of questions</h5>
+
+        <div class="slidecontainer">
+            <input th:field="*{id}" type="range" min="1" max="10" value="5" class="slider" id="myRange">
+            <p>Value: <span id="demo"></span></p>
+        </div>
+
+        <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+          output.innerHTML = this.value;
+        }
+        </script>
+
+        <button type="submit" class="btn btn-info col-2 gradient-border nohover">Generate Quiz</button>
+
+    </form>
+    <hr>
+    <a th:href="@{/questions/list}">Back to Questions List</a>
+
+</div>
+</body>
+
+</html>

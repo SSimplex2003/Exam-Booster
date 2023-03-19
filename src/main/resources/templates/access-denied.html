@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Access Denied Page</title>
+</head>
+<style>
+    :root {
+        --logo-color: #FF0054;
+        --main-color: #B6B9B9;
+        --secondary-color: #2D3142;
+        --bg-color: #F6E4CB;
+    }
+</style>
+
+<body style="background-color: var(--bg-color)">
+<h2 style="text-align: center; font-family: 'Roboto', sans-serif; color: var(--secondary-color)" >Access Denied</h2>
+
+<hr>
+
+<p style="text-align: center"><a th:href="@{/loginPage}">Back to Home Page</a></p>
+
+</body>
+</html>

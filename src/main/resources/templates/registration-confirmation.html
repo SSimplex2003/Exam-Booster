@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Registration Confirmation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Reference Bootstrap files -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<style>
+    :root {
+        --logo-color: #FF0054;
+        --main-color: #B6B9B9;
+        --secondary-color: #2D3142;
+        --bg-color: #F6E4CB;
+    }
+</style>
+
+<body style="background-color: var(--bg-color)">
+
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h2>User registered successfully!</h2>
+            <hr>
+            <a class="btn btn-info" style="background-color: var(--secondary-color)" th:href="@{/loginPage}">Login with the new user</a>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Question Directory</title>
+
+    <style>
+        #buttons_container {
+            text-align: center;
+        }
+
+        #update, #delete {
+            display: inline;
+        }
+
+        :root {
+            --logo-color: #FF0054;
+            --main-color: #B6B9B9;
+            --secondary-color: #2D3142;
+            --bg-color: #F6E4CB;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+
+        /*TODO: trebuie sa pun secondary color, logo color si la celelalte 3.*/
+        .left-right {
+            background: linear-gradient(90deg, var(--secondary-color) 50%, var(--logo-color) 50%);
+        }
+
+        .left-right:after {
+            background: linear-gradient(90deg, var(--logo-color) 50%, transparent 50%);
+        }
+
+        .left-right, .left-right:after {
+            background-position: 100%;
+        }
+
+        .left-right:hover, .left-right:hover:after {
+            background-position: 0;
+        }
+
+        .right-left {
+            background: linear-gradient(90deg, var(--logo-color) 50%, var(--secondary-color) 50%);
+        }
+
+        .right-left:after {
+            background: linear-gradient(90deg, transparent 50%, var(--logo-color) 50%);
+        }
+
+        .right-left, .right-left:after {
+            background-position: 0;
+        }
+
+        .right-left:hover, .right-left:hover:after {
+            background-position: 100%;
+        }
+
+        .swipe-button {
+            font-weight: bold;
+            font-family: 'Roboto', sans-serif;
+            padding: 12px 30px;
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            box-sizing: border-box;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border: none;
+        }
+
+        .swipe-button:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: -1;
+        }
+
+        .swipe-button, .swipe-button:after {
+            background-size: 200% 200%;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .gradient-border {
+            --borderWidth: 3px;
+            position: relative;
+            border-radius: var(--borderWidth);
+            background-color: var(--borderWidth);
+        }
+
+        .gradient-border:after {
+            content: '';
+            position: absolute;
+            top: calc(-1 * var(--borderWidth));
+            left: calc(-1 * var(--borderWidth));
+            height: calc(100% + var(--borderWidth) * 2);
+            width: calc(100% + var(--borderWidth) * 2);
+            background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+            border-radius: calc(2 * var(--borderWidth));
+            z-index: -1;
+            animation: animatedgradient 3s ease alternate infinite;
+            background-size: 300% 300%;
+        }
+
+
+        @keyframes animatedgradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .btn.nohover:hover {
+            /* here copy default .btn class styles */
+            background-color: var(--borderWidth);
+            /* or something like that */
+        }
+    </style>
+</head>
+
+<body style="background-color: var(--bg-color)">
+
+<div class="container">
+    <h2 align="center" style="font-family: 'Roboto', sans-serif;">Question Directory</h2>
+    <!-- Add a logout button -->
+    <div style="text-align: right; width: 100%;">
+        <form action="#" th:action="@{/logout}"
+              method="POST">
+            <input type="submit" value="Logout" class="btn btn-outline-primary mt-2"
+                   style="border-color: var(--logo-color); color: var(--logo-color)"/>
+        </form>
+    </div>
+    <hr>
+
+    <div>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <h5 style="font-family: 'Roboto', sans-serif;">You can generate a quiz based on selected
+                        category</h5><br>
+                    <a id="generateQuizButton" th:href="@{/export/showFormForGenerateQuiz}"
+                       class="btn btn-warning gradient-border nohover"
+                       style="width: 300px; height: 60px; text-align: center; padding: 1% 0; font-family: 'Roboto', sans-serif;">
+                        <p style=" transform:translateY(15%)">Generate Quiz</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+
+    <form th:action="@{/questions/search}" class="form-inline">
+        <a th:href="@{/questions/showFormForAdd}"
+           class="btn btn-primary btn-sm mr-5 mb-3 swipe-button left-right"
+           sec:authorize="hasAnyRole('ROLE_POWER_USER', 'ROLE_ADMIN_USER')">
+            Add Question
+        </a>
+        <div class="searchBox">
+            <input class="form-control  ml-6 mr-sm-2 mb-3 searchInput" type="search" name="questionCategory"
+                   placeholder="Search by category"/>
+
+            <button class="btn btn-success mb-3 searchButton" type="submit">Search</button>
+        </div>
+<!--        <a th:href="@{/questions/showFormForAdd}"-->
+<!--           class="btn btn-primary btn-sm mr-5 mb-3">-->
+<!--            Add Question-->
+<!--        </a>-->
+        <hr>
+        <a id="backButton" th:href="@{/categories/list}"
+           class="btn btn-primary btn-sm mb-3 swipe-button right-left"
+           sec:authorize="hasAnyRole('ROLE_POWER_USER', 'ROLE_ADMIN_USER')">
+            All Categories
+        </a>
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th style="background-color: var(--secondary-color)">Question</th>
+            <th style="background-color: var(--secondary-color)">Answer</th>
+            <th style="background-color: var(--secondary-color)">Category</th>
+            <th style="background-color: var(--secondary-color)">Creator</th>
+            <th style="background-color: var(--secondary-color)">Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tempQuestion : ${questions}">
+            <td th:text="${tempQuestion.sentence}"/>
+            <td th:text="${tempQuestion.answer}"/>
+            <td th:text="${tempQuestion.category}"/>
+            <td th:text="${tempQuestion.creator}"/>
+
+            <td>
+                <div id="buttons_container">
+                    <div id="update" sec:authorize="hasAnyRole('ROLE_POWER_USER', 'ROLE_ADMIN_USER')">
+                        <!-- Add "update" button/link -->
+                        <a th:href="@{/questions/showFormForUpdate(questionId=${tempQuestion.id})}"
+                           class="btn btn-info btn-sm upd"
+                           style="font-weight: bold; border: none; width: 64px; background-color: var(--main-color)">
+                            Update
+                        </a>
+                    </div>
+
+                    <div id="delete" sec:authorize="hasRole('ROLE_ADMIN_USER')">
+                        <!-- Add "delete" button/link -->
+                        <a th:href="@{/questions/delete(questionId=${tempQuestion.id})}"
+                           style="font-weight: bold; border: none; width: 64px; background-color: var(--logo-color)"
+                           class="btn btn-danger btn-sm del"
+                           onclick="if (!(confirm('Are you sure you want to delete this question?'))) return false">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        User: <span sec:authentication="name"></span>
+        <br>
+        Role(s): <span sec:authentication="principal.authorities"></span>
+        <br><br>
+    </div>
+</div>
+<br><br><br><br>
+</body>
+
+</html>

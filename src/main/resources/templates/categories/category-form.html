@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Save Category</title>
+</head>
+<style>
+    :root {
+        --logo-color: #FF0054;
+        --main-color: #B6B9B9;
+        --secondary-color: #2D3142;
+        --bg-color: #F6E4CB;
+    }
+
+</style>
+<body style="background-color: var(--bg-color); text-align: center">
+
+<div class="container">
+
+    <h3 style="text-align: center; font-family: 'Roboto', sans-serif">Category Directory</h3>
+    <hr>
+
+    <p class="h4 mb-4" style="text-align: center; font-family: 'Roboto', sans-serif">Save Category</p>
+
+    <form th:action="@{/categories/save}"
+          th:object="${category}" method="POST">
+
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{id}"/>
+
+        <input style="margin: 0 auto" th:field="*{name}" required="true"
+               class="form-control mb-4 col-4" placeholder="Type category name here:">
+
+        <button style="background-color: var(--secondary-color)" type="submit" class="btn btn-info col-2">Save</button>
+
+    </form>
+
+    <hr>
+    <a th:href="@{/categories/list}">Back to Categories List</a>
+
+</div>
+</body>
+
+</html>
+
